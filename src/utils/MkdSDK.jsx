@@ -1,8 +1,9 @@
+
 export default function MkdSDK() {
   this._baseurl = "https://reacttask.mkdlabs.com";
   this._project_id = "reacttask";
   this._secret = "d9hedycyv6p7zw8xi34t9bmtsjsigy5t7";
-  this._table = "";
+  this._table = "video";
   this._custom = "";
   this._method = "";
 
@@ -15,6 +16,27 @@ export default function MkdSDK() {
   
   this.login = async function (email, password, role) {
     //TODO
+    // ========== Login API Call ==========
+    try {
+      const response = await fetch(`${this._baseurl}/v2/api/lambda/login`, {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-project":"cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw==",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          role
+        })
+      });
+
+      const authData = await response.json();
+      return authData;
+
+    } catch (error) {
+      return console.log("error ========> ",error);
+    }
   };
 
   this.getHeader = function () {
@@ -49,6 +71,7 @@ export default function MkdSDK() {
 
         if (getResult.status === 401) {
           throw new Error(jsonGet.message);
+          
         }
 
         if (getResult.status === 403) {
@@ -72,7 +95,6 @@ export default function MkdSDK() {
           }
         );
         const jsonPaginate = await paginateResult.json();
-
         if (paginateResult.status === 401) {
           throw new Error(jsonPaginate.message);
         }
@@ -88,6 +110,26 @@ export default function MkdSDK() {
 
   this.check = async function (role) {
     //TODO
+    try {
+      const response = await fetch(`${this._baseurl}/v2/api/lambda/check`, {
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-project":"cmVhY3R0YXNrOmQ5aGVkeWN5djZwN3p3OHhpMzR0OWJtdHNqc2lneTV0Nw==",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          role
+        })
+      });
+
+      const isValid = await response.json();
+      return isValid;
+
+    } catch (error) {
+      return console.log("error ========> ",error);
+    }
+  
   };
 
   return this;

@@ -17,23 +17,7 @@ const AdminDashboardPage = () => {
 
 
   const callRestPaginateAPI = async () => {
-    let sdk = new MkdSDK();
-
-    try {
-      const response = await sdk.check(role);
-      const responseCheck = await response.json();
-      console.log("responseCheck",responseCheck);
-    } catch (error) {
-      if (error.message === "TOKEN_EXPIRED") {
-        dispatch({
-          type: "LOGOUT",
-        });
-        window.location.href = "/" + role + "/login";
-      } else {
-        console.log(error.message);
-      }
-    }
-
+    
     try {
       const response = await sdk.callRestAPI({ page:1 , limit:10 } , "GET");
       const responseData = await response.json();

@@ -31,8 +31,6 @@ const AdminLoginPage = () => {
     let sdk = new MkdSDK();
     //TODO
     const response = await sdk.login(data.email, data.password, "admin");
-
-    console.log("response =====> ",response);
     const {user_id, role, token} = response;
    
     localStorage.setItem("user", JSON.stringify(user_id));

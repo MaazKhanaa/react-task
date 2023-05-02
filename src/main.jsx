@@ -9,7 +9,6 @@ import NotFoundPage from "./pages/NotFoundPage";
 function renderRoutes(role) {
   switch (role) {
     case 'admin':
-      console.log("Admin");
       return (
         <Routes>
           <Route path="/" element={<Navigate to="/admin/dashboard" />}></Route>
@@ -19,7 +18,6 @@ function renderRoutes(role) {
         </Routes>
       );
     default:
-      console.log("Guest");
       return (
         <Routes>
           <Route exact path="/" element={<Navigate to="/admin/login" />}></Route>
@@ -33,14 +31,12 @@ function renderRoutes(role) {
 
 function Main() {
   const { state } = React.useContext(AuthContext);
-  console.log("state --------> ",state);
-
   return (
     <div className="h-full">
       <div className="flex w-full">
         <div className="w-full">
           <div className="page-wrapper w-full py-10 px-5">
-            {!state.isAuthenticated ? renderRoutes('guest')
+            {!state.isAuthenticated ? renderRoutes()
               : (renderRoutes(state.role))}
           </div>
         </div>

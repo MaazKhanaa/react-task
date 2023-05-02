@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { AuthContext } from "../authContext";
+import { GlobalContext, showToast } from "../globalContext";
 import MkdSDK from "../utils/MkdSDK";
 
 const AdminDashboardPage = () => {
   const { dispatch } = React.useContext(AuthContext);
+  const { dispatch: SNACKBARDISPATCH } = React.useContext(GlobalContext);
   const role = JSON.parse(localStorage.getItem("role"));
 
 
@@ -12,12 +14,13 @@ const AdminDashboardPage = () => {
     dispatch({
       type: "LOGOUT",
     });
+    showToast(SNACKBARDISPATCH, "Logout Successfull!")
     window.location.href = "/" + role + "/login";
   }
 
 
   const callRestPaginateAPI = async () => {
-    
+    let sdk = new MkdSDK();
     try {
       const response = await sdk.callRestAPI({ page:1 , limit:10 } , "GET");
       const responseData = await response.json();
@@ -25,6 +28,7 @@ const AdminDashboardPage = () => {
 
 
     } catch (error) {
+      // ========== Always giving token expired ==========  
       // if (error.message === "TOKEN_EXPIRED") {
       //   dispatch({
       //     type: "LOGOUT",
